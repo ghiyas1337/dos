@@ -24,7 +24,7 @@ def print_banner():
 
 ▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▒▒▒▒▒▒  [bright_yellow]╔══════════════════════════════╗[/]
 ▒▒█▒▒▒▄██████████▄▒▒▒▒  [bright_yellow]║[/]    [bold cyan]DoS Testing Framework[/]     [bright_yellow]║[/]
-▒█▐▒▒▒████████████▒▒▒▒  [bright_yellow]║[/]   [bold red]Created by Wanz Xploit[/]     [bright_yellow]║[/]
+▒█▐▒▒▒████████████▒▒▒▒  [bright_yellow]║[/]   [bold red]Created by Ghiyas1337[/]     [bright_yellow]║[/]
 ▒▌▐▒▒██▄▀██████▀▄██▒▒▒  [bright_yellow]╚══════════════════════════════╝[/]
 ▐┼▐▒▒██▄▄▄▄██▄▄▄▄██▒▒▒  [bright_yellow][[/][bold red]WARNING[/][bright_yellow]][/] [bold white]Educational Purposes Only[/]
 ▐┼▐▒▒██████████████▒▒▒  [bright_yellow][[/][bold cyan]INFO[/][bright_yellow]][/] [bold white]Press Ctrl+C to Stop Attack[/]
