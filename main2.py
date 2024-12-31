@@ -39,7 +39,7 @@ def load_proxies(file_path):
     proxies = []
     with open(file_path, 'r') as file:
         for line in file:
-            proxies.append(line.strip())
+            proxies.append(line.strip())  # Read IP:Port format
     return proxies
 
 def select_random_proxy(proxies):
@@ -79,7 +79,7 @@ def send_request(url, thread_id, stats, progress, proxies=None):
         )
         progress.console.print(error_panel)
     except requests.exceptions.ConnectionError:
-        stats.failed_connections += 1
+ stats.failed_connections += 1
         error_panel = Panel(
             "[bold red]CONNECTION FAILED[/]",
             title=f"[bold red]Thread #{thread_id:03d}[/]",
