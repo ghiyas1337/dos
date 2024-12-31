@@ -10,6 +10,31 @@ import signal
 
 console = Console()
 
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def print_banner():
+    banner = """[bold red]
+
+  █████╗ ██╗  ██╗██╗██╗   ██╗ █████╗ ███████╗ ██╗██████╗ ██████╗ ███████╗
+██╔════╝ ██║  ██║██║╚██╗ ██╔╝██╔══██╗██╔════╝███║╚════██╗╚════██╗╚════██║
+██║  ███╗███████║██║ ╚████╔╝ ███████║███████╗╚██║ █████╔╝ █████╔╝    ██╔╝
+██║   ██║██╔══██║██║  ╚██╔╝  ██╔══██║╚════██║ ██║ ╚═══██╗ ╚═══██╗   ██╔╝ 
+╚██████╔╝██║  ██║██║   ██║   ██║  ██║███████║ ██║██████╔╝██████╔╝   ██║  
+ ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝ ╚═╝╚═════╝ ╚═════╝    ╚═╝  
+                                                                         
+
+      [bright_yellow]╔══════════════════════════════╗[/]
+      [bright_yellow]║[/]    [bold cyan]DoS Testing Framework[/]     [bright_yellow]║[/]
+      [bright_yellow]║[/]   [bold red]Created by Ghiyas1337[/]     [bright_yellow]║[/]
+      [bright_yellow]╚══════════════════════════════╝[/]
+      [bright_yellow][[/][bold red]WARNING[/][bright_yellow]][/] [bold white]Educational Purposes Only[/]
+      [bright_yellow][[/][bold cyan]INFO[/][bright_yellow]][/] [bold white]Press Ctrl+C to Stop Attack[/]
+      [bright_yellow][[/][bold green]MODE[/][bright_yellow]][/] [bold white]Unlimited Threads | Auto-Timer[/]
+
+⠀⠀⠀⠀⠀⠀[/]"""
+    console.print(Align.center(banner))
+
 def load_proxies(file_path):
     proxies = []
     with open(file_path, 'r') as file:
@@ -59,7 +84,7 @@ def send_request(url, thread_id, stats, progress, proxies=None):
             "[bold red]CONNECTION FAILED[/]",
             title=f"[bold red]Thread #{thread_id:03d}[/]",
             border_style="red",
-            padding=(0, 1)
+            padding=(0 , 1)
         )
         progress.console.print(error_panel)
     except Exception as e:
@@ -116,7 +141,7 @@ def main():
         try:
             thread_id = 1
             while stats.active:
-                proxy = select_random_proxy(proxies )
+                proxy = select_random_proxy(proxies)
                 thread = threading.Thread(
                     target=send_request,
                     args=(url, thread_id, stats, progress, {"http": proxy, "https": proxy} if proxy else None)
