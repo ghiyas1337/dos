@@ -7,6 +7,7 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn
 from rich.align import Align
 import signal
+import random
 
 console = Console()
 
@@ -43,8 +44,17 @@ def load_proxies(file_path):
     return proxies
 
 def select_random_proxy(proxies):
-    import random
     return random.choice(proxies) if proxies else None
+
+class Stats:
+    def __init__(self):
+        self.active = True
+        self.total_requests = 0
+        self.successful_requests = 0
+        self.timeouts = 0
+        self.failed_connections = 0
+        self.other_errors = 0
+        self.total_time = 0
 
 def send_request(url, thread_id, stats, progress, proxies=None):
     if not stats.active:
@@ -67,35 +77,50 @@ def send_request(url, thread_id, stats, progress, proxies=None):
             border_style="bright_yellow",
             padding=(0, 1)
         )
-        progress.console.print(status_panel)
-        
+        progress.console.print(status_panel )
     except requests.exceptions.Timeout:
         stats.timeouts += 1
         error_panel = Panel(
-            "[bold yellow]REQUEST TIMEOUT[/]",
-            title=f"[bold red]Thread #{thread_id:03d}[/]",
-            border_style="red",
-            padding=(0, 1)
+            f"[bold red]Timeout occurred for Thread #{thread_id}[/]",
+            title="[bold red]Error[/]",
+            border_style="bright_yellow",
+            padding=(1, 2)
         )
         progress.console.print(error_panel)
     except requests.exceptions.ConnectionError:
- stats.failed_connections += 1
+        stats.failed_connections += 1
         error_panel = Panel(
-            "[bold red]CONNECTION FAILED[/]",
-            title=f"[bold red]Thread #{thread_id:03d}[/]",
-            border_style="red",
-            padding=(0 , 1)
+            f"[bold red]Connection error for Thread #{thread_id}[/]",
+            title="[bold red]Error[/]",
+            border_style="bright_yellow",
+            padding=(1, 2)
         )
         progress.console.print(error_panel)
     except Exception as e:
         stats.other_errors += 1
         error_panel = Panel(
-            f"[bold red]ERROR: {str(e)}[/]",
-            title=f"[bold red]Thread #{thread_id:03d}[/]",
-            border_style="red",
-            padding=(0, 1)
+            f"[bold red]Error: {str(e)} for Thread #{thread_id}[/]",
+            title="[bold red]Error[/]",
+            border_style="bright_yellow",
+            padding=(1, 2)
         )
         progress.console.print(error_panel)
+
+def create_results_display(stats):
+    return Panel(
+        f"[bold white]Total Requests:[/] {stats.total_requests}\n"
+        f"[bold white]Successful Requests:[/] {stats.successful_requests}\n"
+        f"[bold white]Failed Connections:[/] {stats.failed_connections}\n"
+        f"[bold white]Timeouts:[/] {stats.timeouts}\n"
+        f"[bold white]Other Errors:[/] {stats.other_errors}",
+        title="[bold green]Results Summary[/]",
+        border_style="bright_yellow",
+        padding=(1, 2)
+    )
+
+def signal_handler(sig, frame):
+    console.print("\n[bold yellow]⚠ Signal received, stopping the attack...[/]")
+    stats.active = False
 
 def main():
     clear_screen()
